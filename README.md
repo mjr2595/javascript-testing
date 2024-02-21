@@ -1,6 +1,6 @@
 # Mastering JavaScript Unit Testing
 
-This repository contains all of the examples and exercises for my JavaScript testing course.
+This repository contains all of the examples and exercises for Mosh's JavaScript testing course.
 
 - Understand the fundamentals of unit testing and its significance in JavaScript development.
 - Master the setup and usage of Vitest for effective JavaScript testing.
@@ -14,5 +14,4 @@ This repository contains all of the examples and exercises for my JavaScript tes
 - Automate code quality checks with Husky to maintain high coding standards.
 
 You can find the full course at:
-
 https://codewithmosh.com
