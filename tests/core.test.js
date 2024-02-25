@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateDiscount, getCoupons } from "../src/core";
+import { calculateDiscount, getCoupons, validateUserInput } from "../src/core";
 
 describe("getCoupons", () => {
   it("should return an array of coupons", () => {
@@ -48,5 +48,48 @@ describe("calculateDiscount", () => {
 
   it("should handle invalid discount code", () => {
     expect(calculateDiscount(10, "BLAH20")).toBe(10);
+  });
+});
+
+describe("validateUserInput", () => {
+  it("should return success if given valid input", () => {
+    const result = validateUserInput("validusername", 25);
+    expect(result).toMatch(/successful/i);
+  });
+
+  it("should return an error for non-string usernames", () => {
+    const result = validateUserInput(123, 20); // Invalid username (number)
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for usernames shorter than 3 characters", () => {
+    const result = validateUserInput("ab", 20);
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for usernames longer than 255 characters", () => {
+    const result = validateUserInput("a".repeat(256), 20);
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for non-number ages", () => {
+    const result = validateUserInput("hello", "twenty"); // Invalid age (string)
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for ages below 18", () => {
+    const result = validateUserInput("john", 17);
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for ages greater than 150", () => {
+    const result = validateUserInput("john", 151);
+    expect(result).toMatch(/invalid/i);
+  });
+
+  it("should return an error for invalid username and age", () => {
+    const result = validateUserInput("x", 10);
+    expect(result).toMatch(/invalid username/i);
+    expect(result).toMatch(/invalid age/i);
   });
 });
