@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   calculateDiscount,
   canDrive,
+  fetchData,
   getCoupons,
   isPriceInRange,
   isValidUsername,
@@ -157,4 +158,17 @@ describe("canDrive", () => {
       expect(canDrive(age, countryCode)).toBe(expected);
     }
   );
+});
+
+describe("fetchData", () => {
+  it("should return a promise that will resolve to an array of numbers", async () => {
+    try {
+      const result = await fetchData();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+    } catch (error) {
+      expect(error).toHaveProperty("reason");
+      expect(error.reason).toMatch(/fail/i);
+    }
+  });
 });
