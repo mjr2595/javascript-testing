@@ -120,15 +120,24 @@ describe("isValidUsername", () => {
   const minLength = 5;
   const maxLength = 15;
 
-  it("should return true username is within range", () => {
+  it("should return true username is at the min or max length", () => {
     expect(isValidUsername("x".repeat(minLength))).toBe(true);
+    expect(isValidUsername("x".repeat(maxLength))).toBe(true);
   });
 
-  it("should return false if username is too short", () => {
+  it("should return true username is within the length contraints", () => {
+    expect(isValidUsername("x".repeat(minLength + 1))).toBe(true);
+    expect(isValidUsername("x".repeat(maxLength - 1))).toBe(true);
+  });
+
+  it("should return true username is outside the length contraints", () => {
     expect(isValidUsername("x".repeat(minLength - 1))).toBe(false);
+    expect(isValidUsername("x".repeat(maxLength + 1))).toBe(false);
   });
 
-  it("should return false if username is too long", () => {
-    expect(isValidUsername("x".repeat(maxLength + 1))).toBe(false);
+  it("should return false for invalid input types", () => {
+    expect(isValidUsername(null)).toBe(false);
+    expect(isValidUsername(undefined)).toBe(false);
+    expect(isValidUsername(1)).toBe(false);
   });
 });
