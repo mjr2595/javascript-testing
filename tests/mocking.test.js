@@ -4,16 +4,25 @@ import {
   getShippingInfo,
   renderPage,
   submitOrder,
+  signUp,
 } from "../src/mocking";
 import { getExchangeRate } from "../src/libs/currency";
 import { getShippingQuote } from "../src/libs/shipping";
 import { trackPageView } from "../src/libs/analytics";
 import { charge } from "../src/libs/payment";
+import { sendEmail } from "../src/libs/email";
 
 vi.mock("../src/libs/currency");
 vi.mock("../src/libs/shipping");
 vi.mock("../src/libs/analytics");
 vi.mock("../src/libs/payment");
+vi.mock("../src/libs/email", async (importOriginal) => {
+  const originalModule = await importOriginal();
+  return {
+    ...originalModule,
+    sendEmail: vi.fn(),
+  };
+});
 
 describe("test suite", () => {
   it("test case", () => {
@@ -87,5 +96,26 @@ describe("submitOrder", () => {
     vi.mocked(charge).mockResolvedValue({ status: "failed" });
     const result = await submitOrder(order, creditCard);
     expect(result).toEqual({ success: false, error: "payment_error" });
+  });
+});
+describe("signUp", () => {
+  const email = "testy.mctestyface@emailplace.com";
+
+  it("should return false if email is not valid", async () => {
+    const result = await signUp("z");
+    expect(result).toBe(false);
+  });
+
+  it("should return true if email is valid", async () => {
+    const result = await signUp(email);
+    expect(result).toBe(true);
+  });
+
+  it("should send the welcom email if email is valid", async () => {
+    const result = await signUp(email);
+    expect(sendEmail).toHaveBeenCalled();
+    const args = vi.mocked(sendEmail).mock.calls[0];
+    expect(args[0]).toBe(email);
+    expect(args[1]).toMatch(/welcome/i);
   });
 });
