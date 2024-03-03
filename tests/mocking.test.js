@@ -13,6 +13,7 @@ import {
   renderPage,
   signUp,
   submitOrder,
+  getDiscount,
 } from "../src/mocking";
 
 vi.mock("../src/libs/currency");
@@ -151,5 +152,23 @@ describe("isOnline", () => {
 
     vi.setSystemTime("2024-01-01 19:59");
     expect(isOnline()).toBe(true);
+  });
+});
+
+describe("getDiscount", () => {
+  it("should return 20% discount on Christmas Day", () => {
+    vi.setSystemTime("2024-12-25 00:01");
+    expect(getDiscount()).toBe(0.2);
+
+    vi.setSystemTime("2024-12-25 23:59");
+    expect(getDiscount()).toBe(0.2);
+  });
+
+  it("should return no discount on other days", () => {
+    vi.setSystemTime("2024-12-24 23:59");
+    expect(getDiscount()).toBe(0);
+
+    vi.setSystemTime("2024-12-26 00:01");
+    expect(getDiscount()).toBe(0);
   });
 });
