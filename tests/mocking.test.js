@@ -13,7 +13,7 @@ import {
   renderPage,
   signUp,
   submitOrder,
-  getDiscount,
+  getDiscount
 } from '../src/mocking';
 
 vi.mock('../src/libs/currency');
@@ -24,7 +24,7 @@ vi.mock('../src/libs/email', async (importOriginal) => {
   const originalModule = await importOriginal();
   return {
     ...originalModule,
-    sendEmail: vi.fn(),
+    sendEmail: vi.fn()
   };
 });
 
@@ -117,7 +117,7 @@ describe('signUp', () => {
   });
 
   it('should send the welcom email if email is valid', async () => {
-    const result = await signUp(email);
+    await signUp(email);
     expect(sendEmail).toHaveBeenCalledOnce();
     const args = vi.mocked(sendEmail).mock.calls[0];
     expect(args[0]).toBe(email);

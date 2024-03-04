@@ -7,7 +7,7 @@ import {
   getCoupons,
   isPriceInRange,
   isValidUsername,
-  validateUserInput,
+  validateUserInput
 } from '../src/core';
 
 describe('getCoupons', () => {
@@ -109,7 +109,7 @@ describe('isPriceInRange', () => {
     { scenario: 'price = min', price: 0, expected: true },
     { scenario: 'price between min and max', price: 50, expected: true },
     { scenario: 'price = max', price: 100, expected: true },
-    { scenario: 'price > max', price: 200, expected: false },
+    { scenario: 'price > max', price: 200, expected: false }
   ])('should return $expected when $scenario', ({ price, expected }) => {
     expect(isPriceInRange(price, 0, 100)).toBe(expected);
   });
@@ -152,12 +152,12 @@ describe('canDrive', () => {
     { age: 17, countryCode: 'US', expected: true },
     { age: 16, countryCode: 'UK', expected: false },
     { age: 17, countryCode: 'UK', expected: true },
-    { age: 18, countryCode: 'UK', expected: true },
+    { age: 18, countryCode: 'UK', expected: true }
   ])(
     'should return $expected for ($age, $countryCode)',
     ({ age, countryCode, expected }) => {
       expect(canDrive(age, countryCode)).toBe(expected);
-    },
+    }
   );
 });
 
